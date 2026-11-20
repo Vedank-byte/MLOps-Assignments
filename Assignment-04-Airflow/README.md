@@ -1,9 +1,7 @@
-# Assignment 4 — Apache Airflow DAG
+# Assignment 4 — Apache Airflow Workflow
 
-**Verified configuration from the assignment report:** Airflow 3.1.3 in Docker, DAG `data_pipeline_dag`, schedule `@daily`, five PythonOperator tasks, ordered as below.
+**Aim:** Orchestrate an ETL-style workflow using Apache Airflow and Docker.
 
-```text
-data_extraction >> data_validation >> data_processing >> report_generation >> notification
-```
+**Files:** [task_dependencies.txt](task_dependencies.txt) records the DAG name, schedule and task ordering. The complete original DAG and Docker Compose source are not present.
 
-This is a task-dependency excerpt, **not** the complete original `dags/data_pipeline_dag.py`. Recorded run: all five tasks succeeded; generated report contained 5 input records, 1 missing value, 0 invalid records and 5 processed records. Original project: `C:\Users\vedan\Assignment4`.
+**Recorded output:** All five tasks succeeded. **5 input records**, **1 missing value**, **0 invalid records**, **5 processed records**. Original Airflow UI screenshots have not been uploaded here.
