@@ -1,7 +1,7 @@
 # Assignment 3 — Titanic Feature Engineering
 
-**Aim:** Build a preprocessing and feature-selection pipeline for Titanic data.
+**Aim:** Build a Titanic preprocessing and feature-selection pipeline.
 
-**Files:** [feature_pipeline_excerpt.py](feature_pipeline_excerpt.py) preserves the transformation logic. Dataset loading, imports and sample construction are not included in the excerpt.
+**Files:** `preprocessing.py`, `feature_selection.py`, `pipeline.py` and `requirements.txt` provide a reconstructed modular implementation; `feature_pipeline_excerpt.py` preserves the partial original report excerpt. The original Titanic dataset is not included; place it at `data/train.csv` to run.
 
-**Recorded output:** **891 rows × 8 selected features**, with no missing values in the transformed output. Original pipeline artifact and output screenshots have not been uploaded here.
+**Recorded original output:** **891 rows × 8 selected features**, with no missing values after transformation. This output is from the practical report, not a fresh execution of the reconstructed files.
