@@ -1,20 +1,43 @@
-# Assignment 8 — Prometheus & Grafana Monitoring
+# Assignment 8 — Monitor an Iris ML API with Prometheus and Grafana
 
-**Verified from the completed practical:**
+**Purpose:** Serve an Iris classifier, collect Prometheus metrics and visualize prediction volume, request throughput and scrape health in Grafana.
 
-```text
-POST http://127.0.0.1:8001/predict
-GET  http://127.0.0.1:8001/metrics/
-Prometheus scrape: host.docker.internal:8001/metrics/
-Prometheus job: iris-ml-api
+## Project files
+
+- `app.py` — FastAPI prediction endpoint and Prometheus counters
+- `train_model.py` — creates the local Iris model artifact
+- `requirements.txt` — Python dependencies
+- `prometheus.yml` — Prometheus scrape configuration
+- `docker-compose.yml` — Prometheus and Grafana containers
+- `generate_requests.ps1` — sends 50 prediction requests
+- `grafana-queries.promql` — three dashboard queries
+
+**Source status:** The Python and container configuration files above are **reconstructed implementations** based on the recorded assignment behavior, not copies of the original local files. The observed endpoint paths, metric names, scrape target, queries and results are taken from the practical report.
+
+## Recorded output / results
+
+| Observation | Recorded result |
+| --- | --- |
+| Initial prediction count | **2** |
+| Additional prediction requests | **50** |
+| Final Grafana prediction count | **52** |
+| Prometheus target | **UP (1/1)** |
+| Grafana request-rate graph | Rose above zero after traffic |
+| API | `POST http://127.0.0.1:8001/predict` |
+| Metrics | `GET http://127.0.0.1:8001/metrics/` |
+
+**The 2 → 52 results are from the original run, not a guaranteed starting value for this reconstructed implementation.** Counters reset when the API process restarts. The original dashboard screenshot has not been uploaded to this GitHub folder yet; do not mistake the results table for an actual graph image.
+
+## Run locally
+
+```powershell
+python -m pip install -r requirements.txt
+python train_model.py
+python -m uvicorn app:app --host 0.0.0.0 --port 8001
 ```
 
-**PromQL queries used:**
+In a second PowerShell window, run `docker compose up -d`. Open Prometheus at http://localhost:9090 and Grafana at http://localhost:3000. Configure Grafana's Prometheus data source URL as `http://prometheus:9090`, then create the panels using `grafana-queries.promql`. To reproduce the traffic batch, run `.\\generate_requests.ps1` in a third window. Default Grafana credentials in the sample Compose file are for **local development only**; change them for any shared deployment.
 
-```promql
-sum(iris_predictions_total)
-sum(rate(iris_http_requests_total{endpoint="/predict"}[5m]))
-up{job="iris-ml-api"}
-```
+## Scope
 
-The Grafana dashboard showed **52 total predictions** after a batch of 50 additional requests, with a nonzero request rate. Prometheus showed target health **UP (1/1)**. Full local API and Docker Compose configuration were not provided as source attachments, so this directory does not claim to contain them.
+This exercise verifies operational counters and scrape reachability. It does not establish model accuracy, drift, P95 latency, or production reliability.
